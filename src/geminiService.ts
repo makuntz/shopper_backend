@@ -17,7 +17,7 @@ const genAI = new GoogleGenerativeAI(key);
 export async function consultGemini(imageBase64: string) {
     try {
 
-       // Salva a imagem base64 em um arquivo temporário
+       
        const tempFilePath = path.join(__dirname, `temp_${uuidv4()}.jpeg`);
        fs.writeFileSync(tempFilePath, Buffer.from(imageBase64, 'base64'));
           
@@ -26,13 +26,8 @@ export async function consultGemini(imageBase64: string) {
         displayName: "Leitura",
       });
       
-      fs.unlinkSync(tempFilePath);  // Deleta o arquivo temporário
+      fs.unlinkSync(tempFilePath);  
 
-      // console.log(`Uploaded file ${uploadResponse.file.displayName} as: ${uploadResponse.file.uri}`);
-
-      // const getResponse = await fileManager.getFile(uploadResponse.file.name);
-
-      // console.log(`Retrieved file ${getResponse.displayName} as ${getResponse.uri}`);
         
       const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
       
