@@ -1,5 +1,6 @@
-import mongoose
- from "mongoose";
+import mongoose from "mongoose";
+
+
 const measurementSchema = new mongoose.Schema({
   image: {
       type: String,
@@ -22,10 +23,7 @@ const measurementSchema = new mongoose.Schema({
       type: Number,
       required: true,
   },
-  id: { //verificar
-      type: String, 
-      required: true,
-  },
+  
 }, {
   timestamps: true,
 });
