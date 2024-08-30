@@ -43,8 +43,16 @@ export async function consultGemini(imageBase64: string) {
           { text: "Extract the measure from this image" }
       ]);
 
-      console.log(result, 'result foi')
-      const measure_value = parseFloat(result.response.text());
+      
+      const responseText = result.response.text().trim();
+      console.log('Gemini response:', result.response.text())
+
+      const match = responseText.match(/(\d+)/);
+      const measure_value = match ? parseFloat(match[0]) : NaN;
+
+      if (isNaN(measure_value)) {
+          throw new Error('Invalid measurement value returned from Gemini');
+      }
 
       
       return {

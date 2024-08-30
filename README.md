@@ -24,13 +24,14 @@ Chave Gemini API
 git clone https://github.com/makuntz/shopper_backend.git
 
 2. Instale as dependências:
+
 npm install
 
 3. Configure as variáveis de ambiente:
 
 Crie um arquivo .env na raiz do projeto com as seguintes informações:
 
-GOOGLE_API_KEY=your_google_api_key
+GOOGLE_API_KEY=sua_chave
 
 4. Execute o Docker:
 

@@ -80,6 +80,8 @@ app.post('/upload', async (req, res) => {
     }
 });
 
+// app.get('/:id/list')
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
 });
