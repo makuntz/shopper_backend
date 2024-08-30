@@ -8,7 +8,7 @@ dotenv.config();
 
 const key = process.env.API_KEY || '';
 
-// const key = 'AIzaSyCjzYjXSOKyeyk3QkXdzUsdg9-qhv9Qmb0';
+
 
 const fileManager = new GoogleAIFileManager(key);
 const genAI = new GoogleGenerativeAI(key);

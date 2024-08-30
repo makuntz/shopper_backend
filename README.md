@@ -8,15 +8,18 @@ Validação de Dados: Verifica se a leitura é válida e se não há duplicidade
 Consulta a AI (Gemini): Usa a API Gemini da Google para processar a imagem e obter a leitura.
 
 ## Tecnologias Utilizadas
-Node.js
-Express
-TypeScript
-Docker
-Google Cloud - Gemini API
-Requisitos
-Node.js v16.x ou superior
-Docker
-Chave Gemini API
+- Node.js
+- Express
+- TypeScript
+- Docker
+- MongoDB
+- Google Cloud - Gemini API
+
+### Requisitos
+- Node.js v16.x ou superior
+- Docker
+- MongoDB
+- Chave Gemini API
 
 ## Instalação
 1. Clone o repositório:
@@ -31,15 +34,16 @@ npm install
 
 Crie um arquivo .env na raiz do projeto com as seguintes informações:
 
-GOOGLE_API_KEY=sua_chave
+- GOOGLE_API_KEY=sua_chave
+- MONGODB_URI=mongodb://localhost:27017/seu_banco_de_dados
+- PORT=3000
 
 4. Execute o Docker:
 
 docker-compose up --build
 
 ## Endpoint
-
-POST /upload
+### POST /upload
 Este endpoint recebe uma imagem de medidor em base64 e retorna a leitura extraída, juntamente com um UUID para referência.
 
 Requisição:
@@ -58,7 +62,6 @@ Body (exemplo):
 
 
 ### Respostas
-
 1. 200 OK: 
 
 {
@@ -88,6 +91,47 @@ Body (exemplo):
   "error_description": "Erro interno do servidor"
 }
 
+![Measurements](/MESUREMENTS_DB.png)
+
+
+### GET /<customer_code>/list
+### Parâmetros
+ - customer_code:  Código do cliente cujas medições serão listadas.
+ - measure_type: water ou gas
+    - Nesse caso o parametro ficaria assim:
+      /<customer_code>/list?measure_type=gas
+
+### Respostas
+
+1. 200 OK
+
+{
+	"customer_code": "12345",
+	"measures": [
+		{
+			"measure_uuid": "66d1aeb71c244c80876ce90a",
+			"measure_datetime": "2023-08-29T12:00:00.000Z",
+			"measure_type": "WATER",
+			"image_url": "https://generativelanguage.googleapis.com/v1beta/files/mjxrvqs1hiaj"
+		}
+	]
+}
+
+2. 404 Not Found:
+
+{
+  "error_code": "NOT_FOUND",
+  "error_description": "Cliente não encontrado ou sem medições"
+}
+
+3. 500 Internal Server Error:
+
+{
+  "error_code": "SERVER_ERROR",
+  "error_description": "Erro interno do servidor"
+}
+
+![Exemplo](/get.png)
 
 ## Testes
 Os testes para o projeto são escritos com o framework Jest e a biblioteca Supertest para testar a API Express. Para rodar os testes, siga as instruções abaixo:

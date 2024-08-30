@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import { consultGemini } from '../geminiService';
 import Measurement from '../models/measurement';
 import { v4 as uuidv4 } from 'uuid';
+import mongoose from 'mongoose';
 
 
 jest.mock('../geminiService');
@@ -11,6 +12,8 @@ jest.mock('../models/measurement');
 
 const app = express();
 app.use(bodyParser.json({ limit: '10mb' }));
+
+
 
 app.post('/upload', async (req, res) => {
     try {
@@ -179,3 +182,6 @@ describe('POST /upload', () => {
         expect(response.body).toHaveProperty('error_description', 'Erro interno do servidor');
     });
 });
+
+
+

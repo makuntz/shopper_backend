@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 connectDB();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
@@ -80,7 +80,57 @@ app.post('/upload', async (req, res) => {
     }
 });
 
-// app.get('/:id/list')
+app.get('/:customerCode/list', async(req, res) => {
+
+	try {
+		const { customerCode } = req.params;
+		const measureType = req.query.measure_type as string | undefined;
+
+
+		const filter: any = {customer_code: customerCode};
+		
+
+		if (measureType) {
+			const measureTypeUpperCase = measureType.toUpperCase();
+			
+			
+			if (measureTypeUpperCase !== 'WATER' && measureTypeUpperCase !== 'GAS') {
+					return res.status(400).json({
+							error_code: 'INVALID_TYPE',
+							error_description: 'Tipo de medição não permitida',
+					});
+			}
+			filter.measure_type = measureTypeUpperCase;
+	}
+
+		console.log('Filter applied:', filter);
+
+		const measurements = await Measurement.find(filter)
+
+		if(measurements.length === 0){
+			return res.status(404).json({
+				error_code: "MEASURES_NOT_FOUND",
+        error_description: "Nenhuma leitura encontrada"
+			})
+		}
+
+		res.status(200).json({
+			customer_code: customerCode,
+			measures: measurements.map(measure => ({
+					measure_uuid: measure._id,
+					measure_datetime: measure.measure_datetime,
+					measure_type: measure.measure_type,
+					image_url: measure.image
+			}))
+	});
+	} catch (error) {
+		console.error('Error handling GET /:customerCode/list request:', error);
+		res.status(500).json({
+				error_code: "SERVER_ERROR",
+				error_description: "Ocorreu um erro no servidor"
+		});
+	}
+})
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
